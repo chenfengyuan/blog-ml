@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>install_gentoo</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2011-07-25 21:40:48 CST"/>
+<meta name="author" content=""/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+
+<h1 class="title">install<sub>gentoo</sub></h1>
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 install follow these steps: </a></li>
+<li><a href="#sec-2">2 configure </a>
+<ul>
+<li><a href="#sec-2_1">2.1 btrfs </a>
+<ul>
+<li><a href="#sec-2_1_1">2.1.1 btrfs multi device </a></li>
+<li><a href="#sec-2_1_2">2.1.2 subvol </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_2">2.2 security </a>
+<ul>
+<li><a href="#sec-2_2_1">2.2.1 ssh </a></li>
+<li><a href="#sec-2_2_2">2.2.2 encfs </a></li>
+<li><a href="#sec-2_2_3">2.2.3 dm-crypt with luks </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_3">2.3 keyboard </a></li>
+<li><a href="#sec-2_4">2.4 php </a>
+<ul>
+<li><a href="#sec-2_4_1">2.4.1 php.ini </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_5">2.5 sound </a></li>
+<li><a href="#sec-2_6">2.6 cron </a></li>
+<li><a href="#sec-2_7">2.7 opera </a>
+<ul>
+<li><a href="#sec-2_7_1">2.7.1 remove cnnic ca </a></li>
+<li><a href="#sec-2_7_2">2.7.2 flash </a></li>
+<li><a href="#sec-2_7_3">2.7.3 encrypted search </a></li>
+<li><a href="#sec-2_7_4">2.7.4 dragonfly </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_8">2.8 cpufreq </a></li>
+<li><a href="#sec-2_9">2.9 font </a></li>
+<li><a href="#sec-2_10">2.10 genkernel </a>
+<ul>
+<li><a href="#sec-2_10_1">2.10.1 fist time compile </a></li>
+<li><a href="#sec-2_10_2">2.10.2 recompile </a></li>
+<li><a href="#sec-2_10_3">2.10.3 normal compile </a></li>
+<li><a href="#sec-2_10_4">2.10.4 add ccache </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_11">2.11 latex </a></li>
+<li><a href="#sec-2_12">2.12 crypted partition </a></li>
+<li><a href="#sec-2_13">2.13 pmount </a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 needed software [97/97] </a></li>
+<li><a href="#sec-4">4 other software </a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> install follow these steps: </h2>
+<div class="outline-text-2" id="text-1">
+
+<p><a href="http://forums.gentoo.org/viewtopic-p-3146744.html">Install Gentoo on a Windows only machine, no floppy, cdrom</a>
+install gentoo on a normal partition
+compile the initramfs.
+move to the lvm.
+reboot.
+</p></div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> configure </h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2_1" class="outline-3">
+<h3 id="sec-2_1"><span class="section-number-3">2.1</span> btrfs </h3>
+<div class="outline-text-3" id="text-2_1">
+
+
+</div>
+
+<div id="outline-container-2_1_1" class="outline-4">
+<h4 id="sec-2_1_1"><span class="section-number-4">2.1.1</span> btrfs multi device </h4>
+<div class="outline-text-4" id="text-2_1_1">
+
+<p>#以后这里可以添加背景故事
+参考文献:
+btrfs rootfs multi device:
+<a href="http://forums.gentoo.org/viewtopic-t-565360-postdays-0-postorder-asc-start-625.html">http://forums.gentoo.org/viewtopic-t-565360-postdays-0-postorder-asc-start-625.html</a>
+如何制作initramfs:
+<a href="http://en.gentoo-wiki.com/wiki/Initramfs">http://en.gentoo-wiki.com/wiki/Initramfs</a>
+</p>
+<p>
+原理：
+我也不明白。貌似是如果是多device的话，所有的device要active下啥的。
+所以用/bin/btrfsctl -A /dev/sdxn来弄。
+所以就要写个initramfs了。
+步骤:
+</p><ol>
+<li>
+我借助genkernel生成的initramfs.修改init,在合适的地方执行/bin/btrfsctl -A xxx
+我不想写死在initramfs，所以学习原脚本解析参数
+<ol>
+<li>
+在for x in ${CMDLINE}添加一个选择
+btrfs\=*)
+USE<sub>BTRFS</sub><sub>DEVICE</sub>=1
+BTRFS<sub>DEVICES</sub>=`parse<sub>opt</sub> "${x}"`
+;;
+</li>
+<li>
+在 # Determine root device后面添加
+if [ "${USE<sub>BTRFS</sub><sub>DEVICE</sub>}" = 1 ]
+then
+<i>bin/btrfsctl -A ${REAL<sub>ROOT</sub>}           echo "${BTRFS<sub>DEVICES</sub>}"|sed 's</i>,/\n/'|while read btrfs
+do
+/bin/btrfsctl -A "${btrfs}"
+done
+fi
+</li>
+</ol>
+</li>
+<li>
+编译一个静态的btrfsctl
+<ol>
+<li>
+ebuild `equery which btrfs-progs` install
+</li>
+<li>
+cd /var/tmp/portage/sys-fs/btrfs-progs-0.19/work/btrfs-progs-0.19
+</li>
+<li>
+\rm btrfsctl
+</li>
+<li>
+make -n btrfsctl
+应该可以看到一个命令，在其中添加-static，再执行
+</li>
+<li>
+gcc -static xxxxx
+</li>
+<li>
+ldd btrfsctl
+可以看到已经是静态的了
+</li>
+</ol>
+</li>
+<li>
+照教程生成initramfs
+重启选择即可。写得不好主要没时间了。如果有需要的话，我可以重新写下。其实参考资料里讲得很清楚。
+
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_1_2" class="outline-4">
+<h4 id="sec-2_1_2"><span class="section-number-4">2.1.2</span> subvol </h4>
+<div class="outline-text-4" id="text-2_1_2">
+
+<p>title 2.6.32-gentoo3-1g - Man-Eating Seals of Antiquity 
+kernel (hd0,0)/linux-2.6.32-gentoo3-1g root=/dev/sda2 rootflags=subvol=system
+</p>
+<p>
+also can use subvolid
+rootflags is the opition to mount root
+ro              [KNL] Mount root device read-only on boot 
+root=           [KNL] Root filesystem 
+rootdelay=      [KNL] Delay (in seconds) to pause before attempting to  mount the root filesystem 
+rootflags=      [KNL] Set root filesystem mount option string 
+rootfstype=     [KNL] Set root filesystem type 
+rootwait        [KNL] Wait (indefinitely) for root device to show up. Useful for devices that are detected asynchronously(e.g. USB and MMC devices). 
+rw              [KNL] Mount root device read-write on boot
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2_2" class="outline-3">
+<h3 id="sec-2_2"><span class="section-number-3">2.2</span> security </h3>
+<div class="outline-text-3" id="text-2_2">
+
+
+</div>
+
+<div id="outline-container-2_2_1" class="outline-4">
+<h4 id="sec-2_2_1"><span class="section-number-4">2.2.1</span> ssh </h4>
+<div class="outline-text-4" id="text-2_2_1">
+
+<ul>
+<li>
+<a href="http://www.ibm.com/developerworks/cn/aix/library/au-sshlocks/index.html">保护 SSH 的三把锁</a>
+</li>
+<li>
+sshd<sub>config</sub>
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2_2_2" class="outline-4">
+<h4 id="sec-2_2_2"><span class="section-number-4">2.2.2</span> encfs </h4>
+<div class="outline-text-4" id="text-2_2_2">
+
+<ul>
+<li id="sec-2_2_2_1">automount: <br/>
+in fstab:
+securemount#/dev/shm/sdb2/ <i>dev/shm/encrypted</i> fuse defaults,auto 0 0
+in /bin/securemount:
+#!/bin/sh
+echo "perl" | /usr/bin/encfs -S &ndash;public  $*
+</li>
+<li id="sec-2_2_2_2">manual: <br/>
+encfs /path/to/from /path/to/to
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2_2_3" class="outline-4">
+<h4 id="sec-2_2_3"><span class="section-number-4">2.2.3</span> dm-crypt with luks </h4>
+<div class="outline-text-4" id="text-2_2_3">
+
+<p><a href="http://en.gentoo-wiki.com/wiki/DM-Crypt_with_LUKS">DM-Crypt with LUKS</a>
+<a href="http://ubuntuforums.org/showthread.php?p=4530641">How to Resize a LUKS Encrypted File System.</a>
+<a href="http://world.std.com/~reinhold/diceware.html">a better way to create a strong, yet easy to remember passphrase</a>
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2_3" class="outline-3">
+<h3 id="sec-2_3"><span class="section-number-3">2.3</span> keyboard </h3>
+<div class="outline-text-3" id="text-2_3">
+
+<ul>
+<li>
+dvorak,Control=Super<sub>R</sub>
+<a href="http://guaneryu.com/blog/archives/334">用xmodmap映射Super<sub>R为Control</sub><sub>R</sub></a>
+exec setxkbmap -model pc104 -layout us -variant dvorak -option terminate:ctrl<sub>alt</sub><sub>bksp</sub>,ctrl:nocaps
+exec xmodmap ~/.xmodmap
+.xmodmap:
+remove Control = Control<sub>R</sub>
+remove mod4 = Super<sub>R</sub>
+keysym Super<sub>R</sub> = Control<sub>R</sub>
+add Control = Control<sub>R</sub>
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-2_4" class="outline-3">
+<h3 id="sec-2_4"><span class="section-number-3">2.4</span> php </h3>
+<div class="outline-text-3" id="text-2_4">
+
+
+</div>
+
+<div id="outline-container-2_4_1" class="outline-4">
+<h4 id="sec-2_4_1"><span class="section-number-4">2.4.1</span> php.ini </h4>
+<div class="outline-text-4" id="text-2_4_1">
+
+<p>allow<sub>url</sub><sub>fopen</sub> = on(off)
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2_5" class="outline-3">
+<h3 id="sec-2_5"><span class="section-number-3">2.5</span> sound </h3>
+<div class="outline-text-3" id="text-2_5">
+
+<p>rc-update alsasound
+</p></div>
+
+</div>
+
+<div id="outline-container-2_6" class="outline-3">
+<h3 id="sec-2_6"><span class="section-number-3">2.6</span> cron </h3>
+<div class="outline-text-3" id="text-2_6">
+
+<ol>
+<li>
+# emerge vixie-cron
+</li>
+<li>
+# rc-update add vixie-cron default
+</li>
+<li>
+# usermod -G cron -a user
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_7" class="outline-3">
+<h3 id="sec-2_7"><span class="section-number-3">2.7</span> opera </h3>
+<div class="outline-text-3" id="text-2_7">
+
+
+</div>
+
+<div id="outline-container-2_7_1" class="outline-4">
+<h4 id="sec-2_7_1"><span class="section-number-4">2.7.1</span> remove cnnic ca </h4>
+<div class="outline-text-4" id="text-2_7_1">
+
+<p><a href="https://autoproxy.org/zh-CN/node/66">https://autoproxy.org/zh-CN/node/66</a>
+CNNIC ROOT
+all Entrust ca
+<a href="https://tns-fsverify.cnnic.cn/">https://tns-fsverify.cnnic.cn/</a>
+<a href="https://www.enum.cn/">https://www.enum.cn/</a>
+</p></div>
+
+</div>
+
+<div id="outline-container-2_7_2" class="outline-4">
+<h4 id="sec-2_7_2"><span class="section-number-4">2.7.2</span> flash </h4>
+<div class="outline-text-4" id="text-2_7_2">
+
+<p>echo   www-plugins/adobe-flash AdobeFlash-10.1 &gt;&gt; /etc/portage/package.license
+</p></div>
+
+</div>
+
+<div id="outline-container-2_7_3" class="outline-4">
+<h4 id="sec-2_7_3"><span class="section-number-4">2.7.3</span> encrypted search </h4>
+<div class="outline-text-4" id="text-2_7_3">
+
+<ol>
+<li>
+add  72.14.204.100 encrypted.google.com to <a href="/etc/hosts">/etc/hosts</a>
+</li>
+<li>
+visit <a href="https://encrypted.google.com">https://encrypted.google.com</a> <sup><a class="footref" name="fnr.1" href="#fn.1">1</a></sup>
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_7_4" class="outline-4">
+<h4 id="sec-2_7_4"><span class="section-number-4">2.7.4</span> dragonfly </h4>
+<div class="outline-text-4" id="text-2_7_4">
+
+<ol>
+<li>
+download from <a href="https://bitbucket.org/scope/dragonfly-stp-1/downloads">https://bitbucket.org/scope/dragonfly-stp-1/downloads</a>
+</li>
+<li>
+opera:config#DeveloperTools|DeveloperToolsURL
+</li>
+<li>
+read readme.txt and build
+</li>
+<li>
+set Developer Tools URL to a xml file such as  <a href="/home/cfy64/opera/dragonfly-stp-1-ESDI-integration-3/build/client-en.xml">/home/cfy64/opera/dragonfly-stp-1-ESDI-integration-3/build/client-en.xml</a>
+</li>
+<li>
+restart opera
+</li>
+</ol>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2_8" class="outline-3">
+<h3 id="sec-2_8"><span class="section-number-3">2.8</span> cpufreq </h3>
+<div class="outline-text-3" id="text-2_8">
+
+<p><a href="http://gentoo.druggo.org/doc/zh_cn/power-management-guide.xml">power managenment guide</a>
+</p><ol>
+<li>
+compile the kernel,use built-in,not module.
+CPU Frequency Scaling &mdash;&gt;
+[*] CPU Frequency scaling
+<b>[<span style="visibility:hidden;">X</span>]</b>   Enable CPUfreq debugging
+&lt; &gt;   CPU frequency translation statistics
+<b>[<span style="visibility:hidden;">X</span>]</b>     CPU frequency translation statistics details
+Default CPUFreq governor (userspace)
+&lt;*&gt;   'performance' governor
+&lt;*&gt;   'powersave' governor
+&lt;*&gt;   'ondemand' cpufreq policy governor
+&lt;*&gt;   'conservative' cpufreq governor
+&lt;*&gt;   CPU frequency table helpers
+&lt;M&gt; ACPI Processor P-States driver
+&lt;*&gt; CPUFreq driver for your processor
+</li>
+<li>
+add modules="acpi-cpufreq" in /etc/conf.d/modules
+</li>
+<li>
+rc-update add cpufrequtils
+</li>
+<li>
+modify START<sub>OPTS</sub>="&ndash;governor conservative" in <a href="/etc/conf.d/cpufrequtils">cpufrequtils</a>
+</li>
+<li>
+/etc/init.d/cpufrequtils start
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_9" class="outline-3">
+<h3 id="sec-2_9"><span class="section-number-3">2.9</span> font </h3>
+<div class="outline-text-3" id="text-2_9">
+
+<p><a href="http://how-to.wikia.com/wiki/Howto_install_and_use_X-Windows_fonts">Howto install and use X Windows fonts</a>
+</p><ol>
+<li>
+Make a directory in <i>usr/share/fonts</i> or ~/.fonts/
+Example: mkdir <i>usr/share/fonts/freetype</i> 
+</li>
+<li>
+Copy fonts to directory 
+</li>
+<li>
+Make indexes 
+Creating fonts.dir 
+Execute: mkfontdir <i>usr/share/fonts/freetype</i> 
+</li>
+<li>
+Refresh font cache
+Execute: fc-cache 
+Restart any programs you wish to use the new fonts
+</li>
+<li>
+add xft to USE
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_10" class="outline-3">
+<h3 id="sec-2_10"><span class="section-number-3">2.10</span> genkernel </h3>
+<div class="outline-text-3" id="text-2_10">
+
+
+</div>
+
+<div id="outline-container-2_10_1" class="outline-4">
+<h4 id="sec-2_10_1"><span class="section-number-4">2.10.1</span> fist time compile </h4>
+<div class="outline-text-4" id="text-2_10_1">
+
+<p>zcat /proc/config.gz &gt; /usr/share/genkernel/arch/x86<sub>64</sub>/kernel-config
+genkernel &ndash;menuconfig &ndash;lvm &ndash;clean all
+</p></div>
+
+</div>
+
+<div id="outline-container-2_10_2" class="outline-4">
+<h4 id="sec-2_10_2"><span class="section-number-4">2.10.2</span> recompile </h4>
+<div class="outline-text-4" id="text-2_10_2">
+
+<p>do not use &ndash;clean parameter
+</p></div>
+
+</div>
+
+<div id="outline-container-2_10_3" class="outline-4">
+<h4 id="sec-2_10_3"><span class="section-number-4">2.10.3</span> normal compile </h4>
+<div class="outline-text-4" id="text-2_10_3">
+
+<p>use 'eselect kernel' to choice the kernel to be compiled
+genkernel &ndash;menuconfig &ndash;lvm  &ndash;clean all
+adjust the grub.cfg
+</p></div>
+
+</div>
+
+<div id="outline-container-2_10_4" class="outline-4">
+<h4 id="sec-2_10_4"><span class="section-number-4">2.10.4</span> add ccache </h4>
+<div class="outline-text-4" id="text-2_10_4">
+
+<p>CLEAN="no"
+MRPROPER="no"
+KERNEL<sub>CC</sub>="/usr/lib/ccache/bin/gcc"
+CCACHE<sub>DIR</sub>="/var/tmp/ccache"
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2_11" class="outline-3">
+<h3 id="sec-2_11"><span class="section-number-3">2.11</span> latex </h3>
+<div class="outline-text-3" id="text-2_11">
+
+<ol>
+<li>
+add cjk to USE
+</li>
+<li>
+emerge dev-texlive/texlive-langcjk
+</li>
+<li>
+dev-tex/cjk-latex
+</li>
+</ol>
+</div>
+
+</div>
+
+<div id="outline-container-2_12" class="outline-3">
+<h3 id="sec-2_12"><span class="section-number-3">2.12</span> crypted partition </h3>
+<div class="outline-text-3" id="text-2_12">
+
+<p><a href="http://www.gentoo-wiki.info/Dm-crypt">http://www.gentoo-wiki.info/Dm-crypt</a>
+<a href="http://en.gentoo-wiki.com/wiki/DM-Crypt">http://en.gentoo-wiki.com/wiki/DM-Crypt</a>
+</p></div>
+
+</div>
+
+<div id="outline-container-2_13" class="outline-3">
+<h3 id="sec-2_13"><span class="section-number-3">2.13</span> pmount </h3>
+<div class="outline-text-3" id="text-2_13">
+
+<p># usermod -G plubdev -a user
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> needed software [97/97] </h2>
+<div class="outline-text-2" id="text-3">
+
+<ul>
+<li>
+<b>[X]</b> dev-perl/Math-BigInt-GMP
+</li>
+<li>
+<b>[X]</b> sys-fs/btrfs-progs
+</li>
+<li>
+<b>[X]</b> x11-misc/tint2
+</li>
+<li>
+<b>[X]</b> sys-apps/smartmontools
+</li>
+<li>
+<b>[X]</b> dev-perl/glib-perl
+</li>
+<li>
+<b>[X]</b> dev-perl/gtk2-perl
+</li>
+<li>
+<b>[X]</b> dev-perl/gtk2-gladexml
+</li>
+<li>
+<b>[X]</b> dev-util/qgit
+</li>
+<li>
+<b>[X]</b> sys-boot/grub
+</li>
+<li>
+<b>[X]</b> media-sound/shntool
+</li>
+<li>
+<b>[X]</b> app-pda/gtkpod
+</li>
+<li>
+<b>[X]</b> dev-perl/Config-Simple
+</li>
+<li>
+<b>[X]</b> sys-apps/pv
+</li>
+<li>
+<b>[X]</b> media-sound/sox
+</li>
+<li>
+<b>[X]</b> net-ftp/lftp
+</li>
+<li>
+<b>[X]</b> x11-apps/xev
+</li>
+<li>
+<b>[X]</b> dev-perl/Mail-Sender
+</li>
+<li>
+<b>[X]</b> dev-db/sqlitebrowser
+</li>
+<li>
+<b>[X]</b> dev-vcs/gitg
+</li>
+<li>
+<b>[X]</b> media-gfx/gimp
+</li>
+<li>
+<b>[X]</b> media-libs/netpbm
+</li>
+<li>
+<b>[X]</b> media-gfx/viewnior
+</li>
+<li>
+<b>[X]</b> media-gfx/feh
+</li>
+<li>
+<b>[X]</b> app-admin/syslog-ng
+</li>
+<li>
+<b>[X]</b> www-servers/lighttpd
+</li>
+<li>
+<b>[X]</b> app-text/kchmviewer
+</li>
+<li>
+<b>[X]</b> x11-apps/xeyes
+</li>
+<li>
+<b>[X]</b> net-misc/ntpclient
+</li>
+<li>
+<b>[X]</b> app-text/dos2unix
+</li>
+<li>
+<b>[X]</b> sys-fs/dosfstools
+</li>
+<li>
+<b>[X]</b> dev-haskell/mtl
+</li>
+<li>
+<b>[X]</b> app-text/tree
+</li>
+<li>
+<b>[X]</b> net-wireless/aircrack-ng
+</li>
+<li>
+<b>[X]</b> sys-apps/lm<sub>sensors</sub>
+</li>
+<li>
+<b>[X]</b> iotop
+</li>
+<li>
+<b>[X]</b> app-text/sdcv
+</li>
+<li>
+<b>[X]</b> app-emacs/slime
+</li>
+<li>
+<b>[X]</b> app-office/openoffice-bin
+</li>
+<li>
+<b>[X]</b> media-gfx/imagemagick
+</li>
+<li>
+<b>[X]</b> dev-perl/rename
+</li>
+<li>
+<b>[X]</b> net-misc/miredo
+</li>
+<li>
+<b>[X]</b> pmount
+</li>
+<li>
+<b>[X]</b> alsa-utils
+</li>
+<li>
+<b>[X]</b> axel
+</li>
+<li>
+<b>[X]</b> bc
+</li>
+<li>
+<b>[X]</b> ccache
+</li>
+<li>
+<b>[X]</b> cherokee
+</li>
+<li>
+<b>[X]</b> conky
+</li>
+<li>
+<b>[X]</b> cpufrequtils
+</li>
+<li>
+<b>[X]</b> dash
+</li>
+<li>
+<b>[X]</b> e-file
+</li>
+<li>
+<b>[X]</b> elscreen
+</li>
+<li>
+<b>[X]</b> emacs
+</li>
+<li>
+<b>[X]</b> ethtool
+</li>
+<li>
+<b>[X]</b> evince
+</li>
+<li>
+<b>[X]</b> fcitx
+</li>
+<li>
+<b>[X]</b> ffmpeg
+</li>
+<li>
+<b>[X]</b> fortune
+</li>
+<li>
+<b>[X]</b> fvwm
+</li>
+<li>
+<b>[X]</b> gspiceui
+</li>
+<li>
+<b>[X]</b> imagemagick
+</li>
+<li>
+<b>[X]</b> info2html
+</li>
+<li>
+<b>[X]</b> iwl5000-ucode
+</li>
+<li>
+<b>[X]</b> kchmviewer
+</li>
+<li>
+<b>[X]</b> layman
+</li>
+<li>
+<b>[X]</b> lunar
+</li>
+<li>
+<b>[X]</b> mlocate
+</li>
+<li>
+<b>[X]</b> moc
+</li>
+<li>
+<b>[X]</b> netcat
+</li>
+<li>
+<b>[X]</b> nload
+</li>
+<li>
+<b>[X]</b> nmap
+</li>
+<li>
+<b>[X]</b> octave
+</li>
+<li>
+<b>[X]</b> opera
+</li>
+<li>
+<b>[X]</b> p7zip
+</li>
+<li>
+<b>[X]</b> pidgin
+</li>
+<li>
+<b>[X]</b> rox
+</li>
+<li>
+<b>[X]</b> screen
+</li>
+<li>
+<b>[X]</b> setxkbmap
+</li>
+<li>
+<b>[X]</b> smplayer
+</li>
+<li>
+<b>[X]</b> spice
+</li>
+<li>
+<b>[X]</b> sqlite
+</li>
+<li>
+<b>[X]</b> sshfs-fuse
+</li>
+<li>
+<b>[X]</b> stardict
+</li>
+<li>
+<b>[X]</b> subversion
+</li>
+<li>
+<b>[X]</b> sudo
+</li>
+<li>
+<b>[X]</b> testdisk
+</li>
+<li>
+<b>[X]</b> tldp-howto
+</li>
+<li>
+<b>[X]</b> wgetpaste
+</li>
+<li>
+<b>[X]</b> wpa<sub>supplicant</sub>
+</li>
+<li>
+<b>[X]</b> www-mechanize
+</li>
+<li>
+<b>[X]</b> x11-misc/xlockmore
+</li>
+<li>
+<b>[X]</b> xinit
+</li>
+<li>
+<b>[X]</b> xinit
+</li>
+<li>
+<b>[X]</b> xorg-server
+</li>
+<li>
+<b>[X]</b> xterm
+</li>
+<li>
+<b>[X]</b> yuanti
+</li>
+<li>
+<b>[X]</b> zsh
+</li>
+</ul>
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> other software </h2>
+<div class="outline-text-2" id="text-4">
+
+<ul>
+<li>
+slimrat
+Slimrat is a command-line and graphical application for automated downloading from file hosters like Rapidshare, Megaupload, Depositfiles and many more. 
+
+</li>
+</ul>
+
+
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+<p class="footnote"><sup><a class="footnum" name="fn.1" href="#fnr.1">1</a></sup> 如果访问重定向了,就访问 <a href="http://www.google.com/ncr">http://www.google.com/ncr</a> ,这样就好了.
+</p>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: 
+</p>
+<p class="date"> Date: 2011-07-25 21:40:48 CST</p>
+<p class="creator">HTML generated by org-mode TAG=7.01g in emacs 23</p>
+</div>
+</div>
+</body>
+</html>
