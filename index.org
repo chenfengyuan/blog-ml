@@ -1,0 +1,6 @@
+#+TITLE:     the title to be shown (default is the buffer name)
+#+AUTHOR:    cfy
+#+EMAIL:     jeova.sanctus.unus+blog.ml@gmail.com
+
+* 我准备用org mode来写blog全静态。
+* [[install_gentoo.html][安装gentoo手记]]
